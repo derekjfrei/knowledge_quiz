@@ -49,7 +49,7 @@ In another terminal window:
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
 # Run the quiz generator
-python quiz.py
+python main.py
 ```
 
 Code is split into small, focused modules to keep responsibilities clear: `llm.py` encapsulates all interactions with the language model (prompt construction, HTTP calls to the local Ollama endpoint, and basic response validation), `quiz.py` contains the quiz-manipulation logic (question/choice handling, scoring, and presentation), and `main.py` performs top-level orchestration and CLI handling. This separation makes it straightforward to replace or mock any single piece (for example, swapping the model client or unit-testing quiz scoring) and keeps the repository easy to navigate on GitHub.
