@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 
 
+
 def get_answers(questions):
     user_answers = []
     for i, question in enumerate(questions, 1):
@@ -60,7 +61,7 @@ def show_answers(questions, user_answers):
 
 def persist_results(questions, user_answers, topic, difficulty, level, score):
     timestamp = datetime.now().isoformat(timespec="seconds")
-    filename = f"quiz_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    filename = f"quiz_results_{datetime.now().strftime('%Y%m%d')}.csv"
 
     fieldnames = [
         "timestamp", "topic", "difficulty", "level", "question_index",

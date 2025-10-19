@@ -1,33 +1,39 @@
 import json
 import requests
+import wikipedia
 
 
 # Ollama API endpoint
 OLLAMA_URL = "http://localhost:11434/api/generate"
 
+
+def get_prompt(topic, difficulty="medium", level="undergrad"):
+    context = get_context(topic)
+
+    """Construct the prompt for the quiz generation."""
+    prompt = (
+        f"Generate a {difficulty} multiple-choice quiz on the topic '{topic}' with context: {context} "
+        f"for {level} students. The quiz should contain 5 questions. "
+        "Each question should have 4 answer choices (A, B, C, D) with one correct answer. "
+        "Provide the correct answer index (0-3) and a brief explanation for each question. "
+        "Format the output as a JSON object with 'questions' as a list of question objects, "
+        "each containing 'question', 'choices', 'correct_index', and 'explanation'."
+    )
+    return prompt
+
+
+def get_context(topic: str) -> str:
+    try:
+        return wikipedia.summary(topic, sentences=6)
+    except Exception:
+        return ""
+
 def generate_quiz(topic, difficulty="medium", level="undergrad"):
     """Generate a quiz using Ollama"""
     
-    prompt = f"""Generate a 5-question multiple choice quiz on "{topic}" with {difficulty} difficulty, {level} level.
-
-Please format your response as JSON with the following structure:
-{{
-  "topic": "{topic}",
-  "questions": [
-    {{
-      "question": "Your question here?",
-      "choices": ["Option A", "Option B", "Option C", "Option D"],
-      "correct_index": 0,
-      "explanation": "Explanation of why this answer is correct"
-    }}
-  ]
-}}
-
-Make sure each question has exactly 4 choices and the correct_index is between 0-3. Generate exactly 5 questions."""
-
     payload = {
         "model": "llama3.2:3b",
-        "prompt": prompt,
+        "prompt": get_prompt(topic, difficulty, level),
         "stream": False,
         "format": "json"
     }

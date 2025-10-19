@@ -1,22 +1,11 @@
 from llm import generate_quiz
+from input import get_topic, get_difficulty, get_level
 from quiz import get_answers, calculate_score, show_answers, persist_results
-from datetime import datetime
-import csv
 
 def main():
-    # Generate the quiz
-    topic = input("Enter a quiz topic (press Enter to use 'TCP vs UDP'): ").strip()
-    if not topic:
-        topic = "TCP vs UDP"
-
-    difficulty = input("Difficulty (easy/medium/hard) [default: medium]: ").strip().lower()
-    if difficulty not in ("easy", "medium", "hard"):
-        difficulty = "medium"
-
-    level = input("Level (undergrad/grad) [default: undergrad]: ").strip().lower()
-    if level not in ("undergrad", "grad"):
-        level = "undergrad"
-
+    topic = get_topic()
+    difficulty = get_difficulty()
+    level = get_level()
     quiz = generate_quiz(topic, difficulty, level)
 
     if quiz:
