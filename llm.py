@@ -12,7 +12,8 @@ def get_prompt(topic, difficulty="medium", level="undergrad"):
 
     """Construct the prompt for the quiz generation."""
     prompt = (
-        f"Generate a {difficulty} multiple-choice quiz on the topic '{topic}' with context: {context} "
+        f"Generate a {difficulty} multiple-choice quiz on the topic '{topic}' with context,"
+        "Context: {context} "
         f"for {level} students. The quiz should contain 5 questions. "
         "Each question should have 4 answer choices (A, B, C, D) with one correct answer. "
         "Provide the correct answer index (0-3) and a brief explanation for each question. "

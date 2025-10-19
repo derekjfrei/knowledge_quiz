@@ -60,13 +60,6 @@ Code is split into small, focused modules to keep responsibilities clear: `llm.p
 - Responses are requested and validated as JSON for predictable, easy parsing.
 - Clear file separation: `llm.py` for LLM logic, `quiz.py` for quiz operations, and `main.py` for top-level control and CLI.
 
-## Planned RAG expansion
+## Context injection strategy
 
-I'd like to expand the project to include a Wikipedia-based Retrieval-Augmented Generation (RAG) pipeline to improve answer accuracy and provide citations. The high-level plan:
-
-- Ingestion: crawl or download a snapshot of relevant Wikipedia articles (either via the MediaWiki API or pre-built dumps). Split articles into smaller chunks (e.g., 500–1,000 tokens) with overlap for context continuity.
-- Vector store: embed the chunks with an embedding model (local or remote) and store them in a fast similarity index (FAISS, Milvus, or Weaviate). Keep this logic in a new module, e.g., `store.py` or `retriever.py`.
-- Retrieval: extend `llm.py` to accept an optional `context` parameter or add a `retriever` helper that returns the top-k passages for a prompt. When generating quizzes or explanations, the main flow would call the retriever first, then build a prompt that includes the retrieved passages as grounding material.
-- Prompting & citation: update prompt templates so the model must ground answers in the provided passages and return citation snippets (e.g., article title + sentence offset). Parse the structured response (still JSON) to include citations alongside each question's explanation.
-
-This design keeps the existing modular separation: `llm.py` remains responsible for calling the model, `quiz.py` can be extended to accept and render citations, and a new `retriever.py`/`store.py` handles the indexing and search lifecycle. The RAG layer could be toggled via a CLI flag in `main.py` so experiments can run with or without external context.
+This project usese context-injection using Wikipedia as a grounding source. The project uses Python's `wikipedia` package to retrieve several sentences on the topic as context, which is injected into the prompt.
