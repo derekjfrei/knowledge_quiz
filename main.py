@@ -8,25 +8,28 @@ def main():
     level = get_level()
     quiz = generate_quiz(topic, difficulty, level)
 
-    if quiz:
-        print("Quiz generated successfully!")
-        print(f"Topic: {quiz.get('topic', 'N/A')}")
-        
-        # Get the questions from the quiz
-        questions = quiz.get('questions', [])
+    if not quiz:
+        print("Failed to generate quiz. Exiting")
+        return
 
-        # Prompt the user to answer each question and record responses
-        user_answers = get_answers(questions)
+    print("Quiz generated successfully!")
+    print(f"Topic: {quiz.get('topic', 'N/A')}")
+    
+    # Get the questions from the quiz
+    questions = quiz.get('questions', [])
 
-        # Calculate and display the score
-        score = calculate_score(questions, user_answers)
-        print(f"\nFinal score: {score}/{len(questions)}")
+    # Prompt the user to answer each question and record responses
+    user_answers = get_answers(questions)
 
-        # Show correct answers and explanations
-        show_answers(questions, user_answers)
+    # Calculate and display the score
+    score = calculate_score(questions, user_answers)
+    print(f"\nFinal score: {score}/{len(questions)}")
 
-        # Save results to CSV
-        persist_results(questions, user_answers, topic, difficulty, level, score)
+    # Show correct answers and explanations
+    show_answers(questions, user_answers)
+
+    # Save results to CSV
+    persist_results(questions, user_answers, topic, difficulty, level, score)
 
 
 if __name__ == "__main__":

@@ -63,6 +63,9 @@ def persist_results(questions, user_answers, topic, difficulty, level, score):
     timestamp = datetime.now().isoformat(timespec="seconds")
     filename = f"quiz_results_{datetime.now().strftime('%Y%m%d')}.csv"
 
+    # Print to stdout the filename
+    print(f"\nSaving results to {filename}")
+
     fieldnames = [
         "timestamp", "topic", "difficulty", "level", "question_index",
         "question", "user_answer", "correct_answer", "is_correct", "explanation", "total_score", "total_questions"
